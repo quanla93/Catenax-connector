@@ -35,7 +35,7 @@ public class SerialPartTypizationModel implements ModelBaseInterface<Integer> {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "serialPartTypization")
-    private List<LocalIdentifiersModel> localIdentifierss;
+    private Set<LocalIdentifiersModel> localIdentifierss;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_manufacturingInformation", referencedColumnName = "id")

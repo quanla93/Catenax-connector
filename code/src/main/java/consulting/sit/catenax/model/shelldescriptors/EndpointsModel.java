@@ -27,7 +27,7 @@ public class EndpointsModel implements ModelBaseInterface<Integer> {
     private Integer id;
 
     @Column
-    private String interfaceSubmodel;
+    private String interfaces;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_protocolInformation", referencedColumnName = "id")

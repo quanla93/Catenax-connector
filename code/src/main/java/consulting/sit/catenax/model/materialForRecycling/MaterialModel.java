@@ -38,6 +38,6 @@ public class MaterialModel implements ModelBaseInterface<Integer> {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "materialModel")
-    private List<ComponentModel> components;
+    private Set<ComponentModel> components;
 
 }

@@ -18,8 +18,8 @@ public class ConvertToSerialPartTypizationDTO {
     private ModelMapper modelMapper;
 
     public SerialPartTypizationDTO convertToSerialPartTypizationDTO(SerialPartTypizationModel serialPartTypizationModel) {
-        SerialPartTypizationDTO SerialPartTypizationDTO = modelMapper.map(serialPartTypizationModel, SerialPartTypizationDTO.class);
-        return SerialPartTypizationDTO;
+        SerialPartTypizationDTO serialPartTypizationDTO = modelMapper.map(serialPartTypizationModel, SerialPartTypizationDTO.class);
+        return serialPartTypizationDTO;
     }
 
     public <S, T> List<T> mapList(List<S> source, Class<T> targetClass) {
