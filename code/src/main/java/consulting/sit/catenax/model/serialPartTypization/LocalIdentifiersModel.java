@@ -31,7 +31,7 @@ public class LocalIdentifiersModel implements ModelBaseInterface<Integer>  {
     private String key;
 
     @ManyToOne
-    @JoinColumn(name = "serial_part_typization_id")
+    @JoinColumn(name = "serial_part_typization_id", nullable = false)
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private SerialPartTypizationModel serialPartTypization;

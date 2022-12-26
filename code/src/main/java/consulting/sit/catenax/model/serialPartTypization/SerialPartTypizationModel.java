@@ -2,6 +2,8 @@ package consulting.sit.catenax.model.serialparttypization;
 
 import consulting.sit.catenax.model.ModelBaseInterface;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -29,8 +32,10 @@ public class SerialPartTypizationModel implements ModelBaseInterface<Integer> {
     @Column(name = "catenaXId")
     private String catenaXId;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "serialPartTypization")
-    private Set<LocalIdentifiersModel> localIdentifiersModels;
+    private List<LocalIdentifiersModel> localIdentifierss;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_manufacturingInformation", referencedColumnName = "id")

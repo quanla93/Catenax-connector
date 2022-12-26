@@ -20,7 +20,7 @@ public class SerialPartTypizationDTO {
     private String catenaXId;
 
     @Schema(description = "Please specify the type of this adaptive " + DTO_NAME, required = true)
-    private List<LocalIdentifiersModel> localIdentifiersModels;
+    private List<LocalIdentifiersDTO> localIdentifierss;
 
     @Schema(description = "Please specify the type of this adaptive " + DTO_NAME, required = true)
     private ManufacturingInformationModel manufacturingInformation;

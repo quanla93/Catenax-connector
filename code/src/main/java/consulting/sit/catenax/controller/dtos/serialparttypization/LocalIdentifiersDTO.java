@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class LocalIdentifiersDTO {
 
-    public static final String DTO_NAME = "MaterialDTO";
+    public static final String DTO_NAME = "LocalIdentifiersDTO";
 
     @Schema(description = "Please specify the type of this adaptive " + DTO_NAME, example = DTO_NAME, required = true)
     private String value;
