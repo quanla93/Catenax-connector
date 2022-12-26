@@ -1,0 +1,34 @@
+version: '3.3'
+services:
+  catenax-db:
+    image: postgres
+    container_name: catenax-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: CatenaX
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password 
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - 8109:5432
+  adminer_caternaX:
+    image: adminer
+    container_name: catenax-adminer
+    restart: unless-stopped
+    depends_on:
+      - catenax-db
+    ports:
+      - 8082:8080
+  catenax-connector:
+    image: catenax-connector
+    container_name: catenax-connector
+    restart: unless-stopped
+    depends_on:
+      - catenax-db
+    ports:
+      - 8100:8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://catenax-db:5432/CatenaX
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
