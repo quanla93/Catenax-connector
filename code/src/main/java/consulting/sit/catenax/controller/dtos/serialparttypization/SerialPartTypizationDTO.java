@@ -5,11 +5,13 @@ import consulting.sit.catenax.model.serialparttypization.LocalIdentifiersModel;
 import consulting.sit.catenax.model.serialparttypization.ManufacturingInformationModel;
 import consulting.sit.catenax.model.serialparttypization.PartTypeInformationModel;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @Schema(title = SerialPartTypizationDTO.DTO_NAME, description = "Adaptive data transfer object for " + SerialPartTypizationDTO.DTO_NAME)
+@Data
 public class SerialPartTypizationDTO {
 
     public static final String DTO_NAME = "SerialPartTypizationDTO";

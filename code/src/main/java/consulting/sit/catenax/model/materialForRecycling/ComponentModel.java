@@ -3,6 +3,8 @@ package consulting.sit.catenax.model.materialforrecycling;
 import consulting.sit.catenax.model.ModelBaseInterface;
 import consulting.sit.catenax.model.materialforrecycling.enums.EAggregateState;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,6 +49,9 @@ public class ComponentModel implements ModelBaseInterface<Integer> {
     private QuantityModel quantityModel;
 
     @ManyToOne
+    @JoinColumn(name = "id_material_model")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private MaterialModel materialModel;
 
 

@@ -32,17 +32,16 @@ public class MaterialController {
             , responses = {
     })
     @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<MaterialDTO>> getAllMaterial()
-    {
+    public ResponseEntity<List<MaterialDTO>> getAllMaterial() {
         final HttpHeaders headers = new HttpHeaders();
         final Optional<List<MaterialDTO>> entityOpt = getMaterialFacade().getAllMaterial();
-        if(entityOpt.isPresent()) {
+        if (entityOpt.isPresent()) {
             return new ResponseEntity<>(entityOpt.get(), headers, HttpStatus.OK);
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
-    private MaterialFacade getMaterialFacade(){
+    protected MaterialFacade getMaterialFacade() {
         return this.materialFacade;
     }
 }

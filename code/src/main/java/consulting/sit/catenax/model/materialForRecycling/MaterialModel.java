@@ -2,6 +2,8 @@ package consulting.sit.catenax.model.materialforrecycling;
 
 import consulting.sit.catenax.model.ModelBaseInterface;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +35,8 @@ public class MaterialModel implements ModelBaseInterface<Integer> {
     @Column(name = "materialClass")
     private String materialClass;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "materialModel")
     private List<ComponentModel> components;
 

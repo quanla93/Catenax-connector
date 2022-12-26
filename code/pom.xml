@@ -147,7 +147,13 @@
 			<artifactId>modelmapper</artifactId>
 			<version>2.3.5</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>consulting.sit.catenax</groupId>
+            <artifactId>catenaxconnector</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>

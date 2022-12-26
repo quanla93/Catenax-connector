@@ -2,11 +2,13 @@ package consulting.sit.catenax.controller.dtos.shelldescriptors;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @Schema(title = SubmodelDescriptorsDTO.DTO_NAME, description = "Adaptive data transfer object for " + SubmodelDescriptorsDTO.DTO_NAME)
+@Data
 public class SubmodelDescriptorsDTO{
 
     public static final String DTO_NAME = "SubmodelDescriptorsDTO";

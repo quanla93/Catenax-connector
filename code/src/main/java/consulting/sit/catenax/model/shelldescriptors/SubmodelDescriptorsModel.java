@@ -2,6 +2,8 @@ package consulting.sit.catenax.model.shelldescriptors;
 
 import consulting.sit.catenax.model.ModelBaseInterface;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -10,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -42,5 +45,8 @@ public class SubmodelDescriptorsModel implements ModelBaseInterface<Integer> {
     private Set<EndpointsModel> endpoints;
 
     @ManyToOne
+    @JoinColumn(name = "shell_descriptors_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private ShellDescriptorModel shellDescriptor;
 }

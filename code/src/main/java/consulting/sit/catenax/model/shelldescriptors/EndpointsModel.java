@@ -2,6 +2,8 @@ package consulting.sit.catenax.model.shelldescriptors;
 
 import consulting.sit.catenax.model.ModelBaseInterface;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,5 +34,8 @@ public class EndpointsModel implements ModelBaseInterface<Integer> {
     private ProtocolInformationModel protocolInformation;
 
     @ManyToOne
+    @JoinColumn(name = "submodel_descriptors_id")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private SubmodelDescriptorsModel submodelDescriptors;
 }

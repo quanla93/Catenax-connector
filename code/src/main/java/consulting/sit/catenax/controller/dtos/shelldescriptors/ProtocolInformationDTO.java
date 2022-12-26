@@ -2,10 +2,12 @@ package consulting.sit.catenax.controller.dtos.shelldescriptors;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @Schema(title = ProtocolInformationDTO.DTO_NAME, description = "Adaptive data transfer object for " + ProtocolInformationDTO.DTO_NAME)
+@Data
 public class ProtocolInformationDTO {
 
     public static final String DTO_NAME = "ProtocolInformationDTO";

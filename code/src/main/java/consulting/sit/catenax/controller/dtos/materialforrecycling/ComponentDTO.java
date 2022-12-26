@@ -7,9 +7,8 @@ import lombok.Data;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @Schema(title = ComponentDTO.DTO_NAME, description = "Adaptive data transfer object for " + ComponentDTO.DTO_NAME)
+@Data
 public class ComponentDTO {
-
-    private Integer id;
 
     public static final String DTO_NAME = "componentDTO";
 
