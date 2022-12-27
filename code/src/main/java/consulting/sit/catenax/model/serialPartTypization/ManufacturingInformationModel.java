@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Calendar;
+import java.sql.Timestamp;
 
 @Data
 @Entity(name = ManufacturingInformationModel.ENTITY_NAME)
@@ -22,7 +22,7 @@ public class ManufacturingInformationModel implements ModelBaseInterface<Integer
     private Integer id;
 
     @Column(name = "date")
-    private Calendar date;
+    private Timestamp date;
 
     @Column(name = "country")
     private String country;

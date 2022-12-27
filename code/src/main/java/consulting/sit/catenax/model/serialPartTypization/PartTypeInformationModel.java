@@ -36,6 +36,6 @@ public class PartTypeInformationModel implements ModelBaseInterface<Integer> {
     private String nameAtCustomer;
 
     @Enumerated(EnumType.STRING)
-    private EClassification eClassification;
+    private EClassification classification;
 
 }

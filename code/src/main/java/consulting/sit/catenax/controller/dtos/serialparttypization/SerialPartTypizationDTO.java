@@ -23,9 +23,9 @@ public class SerialPartTypizationDTO {
     private List<LocalIdentifiersDTO> localIdentifierss;
 
     @Schema(description = "Please specify the type of this adaptive " + DTO_NAME, required = true)
-    private ManufacturingInformationModel manufacturingInformation;
+    private ManufacturingInformationDTO manufacturingInformation;
 
     @Schema(description = "Please specify the type of this adaptive " + DTO_NAME, required = true)
-    private PartTypeInformationModel partTypeInformation;
+    private PartTypeInformationDTO partTypeInformation;
 
 }
