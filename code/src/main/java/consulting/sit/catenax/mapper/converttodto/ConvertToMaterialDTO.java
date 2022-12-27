@@ -27,7 +27,7 @@ public class ConvertToMaterialDTO {
 
     public ComponentDTO convertComponentDTO(ComponentModel componentModel) {
         ComponentDTO componentDTO = modelMapper.map(componentModel, ComponentDTO.class);
-        QuantityDTO quantityDTO = convertQuantityDTO(componentModel.getQuantityModel());
+        QuantityDTO quantityDTO = convertQuantityDTO(componentModel.getQuantity());
         componentDTO.setQuantity(quantityDTO);
         return componentDTO;
     }
@@ -45,16 +45,16 @@ public class ConvertToMaterialDTO {
     }
 
     public List<MaterialDTO> convertToListMaterialDTO(List<MaterialModel> materialModels) {
-//          List<MaterialDTO> materialDTOs = mapList(materialModels, MaterialDTO.class);
-        List<MaterialDTO> materialDTOs = materialModels.stream().map(p -> {
-            MaterialDTO materialDTO = convertToMaterialDTO(p);
-            List<ComponentDTO> componentDTOs = p.getComponents().stream().map(a -> {
-                ComponentDTO componentDTO = convertComponentDTO(a);
-                return componentDTO;
-            }).collect(Collectors.toList());
-            materialDTO.setComponents(componentDTOs);
-            return materialDTO;
-        }).collect(Collectors.toList());
+          List<MaterialDTO> materialDTOs = mapList(materialModels, MaterialDTO.class);
+//        List<MaterialDTO> materialDTOs = materialModels.stream().map(p -> {
+//            MaterialDTO materialDTO = convertToMaterialDTO(p);
+//            List<ComponentDTO> componentDTOs = p.getComponents().stream().map(a -> {
+//                ComponentDTO componentDTO = convertComponentDTO(a);
+//                return componentDTO;
+//            }).collect(Collectors.toList());
+//            materialDTO.setComponents(componentDTOs);
+//            return materialDTO;
+//        }).collect(Collectors.toList());
 
         return materialDTOs;
     }

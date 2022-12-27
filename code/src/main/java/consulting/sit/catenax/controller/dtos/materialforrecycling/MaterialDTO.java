@@ -29,6 +29,6 @@ public class MaterialDTO {
     private String recycledContent;
 
     @Schema(description = "componentDTOS", required = true)
-    private List<ComponentDTO> Components;
+    private List<ComponentDTO> components;
 
 }

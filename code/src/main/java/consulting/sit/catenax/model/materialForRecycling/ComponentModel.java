@@ -46,7 +46,7 @@ public class ComponentModel implements ModelBaseInterface<Integer> {
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.DETACH)
     @JoinColumn(name = "id_quantity", referencedColumnName = "id")
-    private QuantityModel quantityModel;
+    private QuantityModel quantity;
 
     @ManyToOne
     @JoinColumn(name = "id_material_model")
