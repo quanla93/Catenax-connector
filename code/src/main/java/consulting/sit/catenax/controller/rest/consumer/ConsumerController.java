@@ -2,26 +2,35 @@ package consulting.sit.catenax.controller.rest.consumer;
 
 
 import consulting.sit.catenax.controller.GenericControllerSingleId;
+import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
+import consulting.sit.catenax.facade.ConsumerFacade;
 import consulting.sit.catenax.model.materialforrecycling.ComponentModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/consumer/data")
 @Slf4j
 public class ConsumerController extends GenericControllerSingleId<ComponentModel, Integer> {
 
+    private final ConsumerFacade consumerFacade;
+
+    public ConsumerController(final ConsumerFacade consumerFacade) {
+        this.consumerFacade = consumerFacade;
+    }
 
     @Operation(
             summary = "Get contract offer catalog."
@@ -29,64 +38,39 @@ public class ConsumerController extends GenericControllerSingleId<ComponentModel
             , responses = {
     })
     @GetMapping(value = "/catalog", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> getContractOfferByProviderURL(
+    public ResponseEntity<CatalogDTO> getContractOfferByProviderURL(
             @Parameter(description = "The provider url", in = ParameterIn.DEFAULT, required = true)
-            @RequestParam("providerUrl") final String providerUrl )
+            @RequestParam("providerUrl") final String providerUrl)
     {
-       return null;
-    }
-
-    @Operation(
-            summary = "Get Negotiate Contract."
-            , description = "Get Negotiate Contract."
-            , responses = {
-    })
-    @PostMapping(value = "/contractnegotiations", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> createNegotiateContract(
-            @Parameter(description = "Get Negotiate Contract.", in = ParameterIn.DEFAULT, required = true)
-            @RequestBody final  String connectorId)
-    {
-        return null;
+        final HttpHeaders headers = new HttpHeaders();
+       Optional<CatalogDTO> catalogDTOOpt = getConsumerFacade().getContractOfferCatalog(providerUrl);
+       if (catalogDTOOpt.isPresent()) {
+           return new ResponseEntity<>(catalogDTOOpt.get(), headers, HttpStatus.OK);
+       }
+        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
 
-    @Operation(
-            summary = "Get Negotiations."
-            , description = "Get Negotiations."
-            , responses = {
-    })
-    @GetMapping(value = "/contractnegotiations/{negotiationId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> getNegotiateContract(
-            @Parameter(description = "Get Negotiations", in = ParameterIn.DEFAULT, required = true)
-            @PathVariable("negotiationId") final String negotiationId )
-    {
-        return null;
-    }
+//    @Operation(
+//            summary = "Check State of the Transfer Process."
+//            , description = "Check State of the Transfer Process."
+//            , responses = {
+//    })
+//    @GetMapping(value = "/transferprocess/{transferId}/state", produces = {MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<CatalogDTO> checkStateOfTransferProcess(
+//            @Parameter(description = "Check State of the Transfer Process", in = ParameterIn.DEFAULT, required = true)
+//            @PathVariable("transferId") final String transferId)
+//    {
+//        final HttpHeaders headers = new HttpHeaders();
+//        Optional<CatalogDTO> catalogDTOOpt = getConsumerFacade().getContractOfferCatalog(providerUrl);
+//        if (catalogDTOOpt.isPresent()) {
+//            return new ResponseEntity<>(catalogDTOOpt.get(), headers, HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+//    }
 
-    @Operation(
-            summary = "Get Negotiate Contract."
-            , description = "Get Negotiate Contract."
-            , responses = {
-    })
-    @PostMapping(value = "/transferprocess", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> transferData(
-            @Parameter(description = "Get Negotiate Contract.", in = ParameterIn.DEFAULT, required = true)
-            @RequestBody final  String connectorId)
-    {
-        return null;
-    }
-
-    @Operation(
-            summary = "Verify data transfer."
-            , description = "Verify data transfer."
-            , responses = {
-    })
-    @GetMapping(value = "/contractnegotiations/{transferId}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<String> verifyDataTransfer(
-            @Parameter(description = "Verify data transfer", in = ParameterIn.DEFAULT, required = true)
-            @PathVariable("transferId") final String transferId )
-    {
-        return null;
+    protected ConsumerFacade getConsumerFacade() {
+        return consumerFacade;
     }
 
 

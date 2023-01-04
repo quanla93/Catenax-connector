@@ -1,11 +1,13 @@
 package consulting.sit.catenax.service.materialforrecycling;
 
 
+import consulting.sit.catenax.controller.dtos.serialparttypization.SerialPartTypizationDTO;
 import consulting.sit.catenax.model.materialforrecycling.MaterialModel;
 import consulting.sit.catenax.repository.materialforrecycling.MaterialRepository;
 import consulting.sit.catenax.service.GenericService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class MaterialService extends GenericService<MaterialModel, Integer> {
 
     public List<MaterialModel> getAll() {
         List<MaterialModel> materialModels = materialRepository.findAll();
+
         return materialModels;
     }
 }
