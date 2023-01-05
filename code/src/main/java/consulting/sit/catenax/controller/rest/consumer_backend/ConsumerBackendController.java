@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/consumer_backend")
 @Slf4j
-public class ConsumerBackendController extends GenericControllerSingleId<ComponentModel, Integer> {
+public class ConsumerBackendController {
 
     @Operation(
             summary = "Transfer data."

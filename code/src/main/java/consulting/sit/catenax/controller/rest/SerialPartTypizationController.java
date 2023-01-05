@@ -29,8 +29,8 @@ public class SerialPartTypizationController {
     }
     
     @Operation(
-            summary = "Get contract offer catalog."
-            , description = "Get contract offer catalog."
+            summary = "Get all serial part typization."
+            , description = "Get all serial part typization."
             , responses = {
     })
     @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})

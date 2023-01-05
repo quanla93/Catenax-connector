@@ -27,5 +27,7 @@ public class PolicyDTO {
     String target;
     @JsonProperty("@type")
     JsonNode type;
+    @JsonProperty("uid")
+    String uid;
 
 }

@@ -13,7 +13,6 @@ public class ContractOfferDTO {
     PolicyDTO policy;
     @JsonProperty("asset")
     AssetDTO asset;
-
     @JsonProperty("assetId")
     String assetId;
     @JsonProperty("provider")
