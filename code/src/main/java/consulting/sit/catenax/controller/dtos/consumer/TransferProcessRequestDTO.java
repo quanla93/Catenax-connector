@@ -23,5 +23,5 @@ public class TransferProcessRequestDTO {
     @JsonProperty("managedResources")
     private String managedResources;
     @JsonProperty("dataDestination")
-    private String dataDestination;
+    private DataDestinationDTO dataDestination;
 }

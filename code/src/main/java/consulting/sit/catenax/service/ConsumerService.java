@@ -22,24 +22,20 @@ public class ConsumerService {
 
     private static final String DATADESTIANTION = "{ \"type\": \"HttpProxy\" }";
     private static final String MANAGEDRESOURCES = "false";
+    private static final String CONTRACTOFFERCATALOG = "/data/catalog?providerUrl=";
+    private static final String CONTRACTNEGOTIATIONIDURL = "/data/contractnegotiations";
+    private static final String INITIATETRANSFERURL = "/data/transferprocess";
 
-    @Value("${sokrates.consumer.controlplane.url.contractoffer}")
-    private String contractOfferCatalogUrl;
-    @Value("${sokrates.consumer.controlplane.url.offerrespornid}")
-    private String requestOfferRespornUrl;
+    @Value("${edc.consumer.controlplane}")
+    private String edcConsumerControlplane;
 
-    @Value("${sokrates.consumer.controlplane.url.offerrespornid}")
-    private String requestContractNegotiationIdUrl;
-
-    @Value("${sokrates.consumer.controlplane.url.InitiateTransfer}")
-    private String requestInitiateTransferUrl;
     @Autowired
     private WebClient.Builder webClientBuilder;
 
     public CatalogDTO getContractOfferCatalog(String providerUrl){
         CatalogDTO catalogDTO = webClientBuilder.build()
                 .get()
-                .uri(contractOfferCatalogUrl + providerUrl)
+                .uri(edcConsumerControlplane + CONTRACTOFFERCATALOG + providerUrl)
                 .header("X-Api-Key", "password")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -51,7 +47,7 @@ public class ConsumerService {
     public OfferRespornDTO requestOfferResporn(OfferRequestDTO offerRequestDTO) {
         OfferRespornDTO offerRespornDTO = webClientBuilder.build()
                 .post()
-                .uri(requestOfferRespornUrl)
+                .uri(edcConsumerControlplane + CONTRACTNEGOTIATIONIDURL)
                 .body(Mono.just(offerRequestDTO), OfferRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
@@ -67,7 +63,7 @@ public class ConsumerService {
             if (contractNegotiationsDTO.getContractAgreementId() == null) {
                 contractNegotiationsDTO = webClientBuilder.build()
                         .get()
-                        .uri(requestContractNegotiationIdUrl + offerRespornDTO.getId())
+                        .uri(edcConsumerControlplane + CONTRACTNEGOTIATIONIDURL + "/" + offerRespornDTO.getId())
                         .header("X-Api-Key", "password")
                         .accept(MediaType.APPLICATION_JSON)
                         .retrieve()
@@ -90,12 +86,11 @@ public class ConsumerService {
         transferProcessRequestDTO.setConnectorAddress(offerRequestDTO.getConnectorAddress());
         transferProcessRequestDTO.setConnectorId(offerRequestDTO.getConnectorId());
         transferProcessRequestDTO.setContractId(contractNegotiationsDTO.getContractAgreementId());
-        transferProcessRequestDTO.setDataDestination(DATADESTIANTION);
         transferProcessRequestDTO.setManagedResources(MANAGEDRESOURCES);
 
                TransferProcessRespornDTO transferProcessRespornDTO = webClientBuilder.build()
                 .post()
-                .uri(requestInitiateTransferUrl)
+                .uri(edcConsumerControlplane + INITIATETRANSFERURL)
                 .body(Mono.just(transferProcessRequestDTO), TransferProcessRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
