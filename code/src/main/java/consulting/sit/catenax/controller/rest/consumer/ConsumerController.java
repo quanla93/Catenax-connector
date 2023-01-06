@@ -4,6 +4,7 @@ package consulting.sit.catenax.controller.rest.consumer;
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.facade.ConsumerFacade;
 import io.swagger.v3.oas.annotations.Operation;

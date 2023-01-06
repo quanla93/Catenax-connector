@@ -2,6 +2,7 @@ package consulting.sit.catenax.service;
 
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
+import consulting.sit.catenax.controller.dtos.consumer.DataDestinationDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Service
 public class ConsumerService {
 
-    private static final String DATADESTIANTION = "{ \"type\": \"HttpProxy\" }";
+    private static final String TYPE = "HttpProxy";
     private static final String MANAGEDRESOURCES = "false";
     private static final String CONTRACTOFFERCATALOG = "/data/catalog?providerUrl=";
     private static final String CONTRACTNEGOTIATIONIDURL = "/data/contractnegotiations";
@@ -87,6 +88,9 @@ public class ConsumerService {
         transferProcessRequestDTO.setConnectorId(offerRequestDTO.getConnectorId());
         transferProcessRequestDTO.setContractId(contractNegotiationsDTO.getContractAgreementId());
         transferProcessRequestDTO.setManagedResources(MANAGEDRESOURCES);
+        DataDestinationDTO dataDestinationDTO = new DataDestinationDTO();
+        dataDestinationDTO.setType(TYPE);
+        transferProcessRequestDTO.setDataDestination(dataDestinationDTO);
 
                TransferProcessRespornDTO transferProcessRespornDTO = webClientBuilder.build()
                 .post()

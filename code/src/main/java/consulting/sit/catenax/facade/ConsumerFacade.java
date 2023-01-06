@@ -4,6 +4,7 @@ import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.service.ConsumerService;
 import org.springframework.stereotype.Service;
