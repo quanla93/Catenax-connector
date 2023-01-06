@@ -25,7 +25,8 @@ public class ConsumerFacade {
     }
 
     public Optional<ContractNegotiationsDTO> requestContractNegotiations(final OfferRequestDTO offerRequestDTO) {
-        ContractNegotiationsDTO ContractNegotiationsDTO = consumerService.requestContractNegotiationID(offerRequestDTO);
+        OfferRespornDTO offerRespornDTO = consumerService.requestOfferResporn(offerRequestDTO);
+        ContractNegotiationsDTO ContractNegotiationsDTO = consumerService.requestContractNegotiationID(offerRespornDTO);
         return Optional.of(ContractNegotiationsDTO);
     }
 }

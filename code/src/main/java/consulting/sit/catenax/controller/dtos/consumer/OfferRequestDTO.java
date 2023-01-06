@@ -12,11 +12,11 @@ public class OfferRequestDTO implements Serializable {
 
     public static final String DTO_NAME = "OfferRequestDTO";
 
-//    @JsonProperty("connectorId")
+    @JsonProperty("connectorId")
     private String connectorId;
-//    @JsonProperty("connectorAddress")
+    @JsonProperty("connectorAddress")
     private String connectorAddress;
-//    @JsonProperty("offer")
-//    ContractOfferRequestDTO offer;
+    @JsonProperty("offer")
+    private ContractOfferRequestDTO offer;
 
 }
