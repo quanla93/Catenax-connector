@@ -4,6 +4,7 @@ package consulting.sit.catenax.controller.rest.consumer;
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.facade.ConsumerFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -58,16 +59,16 @@ public class ConsumerController {
             summary = " Request a Contract Negotiation ID."
             , description = " Request a Contract Negotiation ID.")
     @PostMapping(value = "/contractnegotiations", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ContractNegotiationsDTO> requestContractNegotiations(
+    public ResponseEntity<TransferProcessRespornDTO> requestContractNegotiations(
             @Parameter(description = "OfferRequestDTO", in = ParameterIn.DEFAULT, required = true)
             @RequestBody final OfferRequestDTO offerRequestDTO)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Optional<ContractNegotiationsDTO> contractNegotiationsDTO = getConsumerFacade().requestContractNegotiations(offerRequestDTO);
-        if (contractNegotiationsDTO.isPresent()) {
-            return new ResponseEntity<>(contractNegotiationsDTO.get(), headers, HttpStatus.OK);
+        Optional<TransferProcessRespornDTO> transferProcessRespornDTO = getConsumerFacade().requestContractNegotiations(offerRequestDTO);
+        if (transferProcessRespornDTO.isPresent()) {
+            return new ResponseEntity<>(transferProcessRespornDTO.get(), headers, HttpStatus.OK);
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }

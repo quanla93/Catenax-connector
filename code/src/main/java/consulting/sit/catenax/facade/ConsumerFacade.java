@@ -4,6 +4,7 @@ import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.service.ConsumerService;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,10 @@ public class ConsumerFacade {
         return Optional.of(catalogDTO);
     }
 
-    public Optional<ContractNegotiationsDTO> requestContractNegotiations(final OfferRequestDTO offerRequestDTO) {
+    public Optional<TransferProcessRespornDTO> requestContractNegotiations(final OfferRequestDTO offerRequestDTO) {
         OfferRespornDTO offerRespornDTO = consumerService.requestOfferResporn(offerRequestDTO);
-        ContractNegotiationsDTO ContractNegotiationsDTO = consumerService.requestContractNegotiationID(offerRespornDTO);
-        return Optional.of(ContractNegotiationsDTO);
+        ContractNegotiationsDTO contractNegotiationsDTO = consumerService.requestContractNegotiationID(offerRespornDTO);
+        TransferProcessRespornDTO transferProcessRespornDTO = consumerService.requestInitiateTransfer(contractNegotiationsDTO, offerRequestDTO);
+        return Optional.of(transferProcessRespornDTO);
     }
 }

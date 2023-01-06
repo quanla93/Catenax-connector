@@ -8,9 +8,9 @@ import java.util.Date;
 @Data
 public class ContractOfferRequestDTO {
     @JsonProperty("offerId")
-    String offerId;
+    private String offerId;
     @JsonProperty("assetId")
-    String assetId;
+    private String assetId;
     @JsonProperty("policy")
-    PolicyRequestDTO policy;
+    private PolicyRequestDTO policy;
 }

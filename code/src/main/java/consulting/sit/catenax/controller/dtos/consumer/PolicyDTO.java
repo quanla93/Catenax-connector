@@ -10,24 +10,24 @@ import java.util.List;
 public class PolicyDTO {
 
     @JsonProperty("permissions")
-    List<JsonNode> permissions;
+    private List<JsonNode> permissions;
     @JsonProperty("prohibitions")
-    List<JsonNode> prohibitions;
+    private List<JsonNode> prohibitions;
     @JsonProperty("obligations")
-    List<JsonNode> obligations;
+    private List<JsonNode> obligations;
     @JsonProperty("extensibleProperties")
-    JsonNode extensibleProperties;
+    private JsonNode extensibleProperties;
     @JsonProperty("inheritsFrom")
-    String inheritsFrom;
+    private String inheritsFrom;
     @JsonProperty("assigner")
-    String assigner;
+    private String assigner;
     @JsonProperty("assignee")
-    String assignee;
+    private String assignee;
     @JsonProperty("target")
-    String target;
+    private String target;
     @JsonProperty("@type")
-    JsonNode type;
+    private JsonNode type;
     @JsonProperty("uid")
-    String uid;
+    private String uid;
 
 }

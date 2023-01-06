@@ -10,12 +10,12 @@ import java.util.List;
 public class PolicyRequestDTO {
 
     @JsonProperty("uid")
-    String uid;
+    private String uid;
     @JsonProperty("prohibitions")
-    List<JsonNode> prohibitions;
+    private List<JsonNode> prohibitions;
     @JsonProperty("obligations")
-    List<JsonNode> obligations;
+    private List<JsonNode> obligations;
     @JsonProperty("permissions")
-    List<JsonNode> permissions;
+    private List<JsonNode> permissions;
 
 }

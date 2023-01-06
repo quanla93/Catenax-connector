@@ -7,22 +7,22 @@ import lombok.Data;
 public class ContractNegotiationsDTO {
 
     @JsonProperty("createdAt")
-    String createdAt;
+    private String createdAt;
     @JsonProperty("updatedAt")
-    String updatedAt;
+    private String updatedAt;
     @JsonProperty("contractAgreementId")
-    String contractAgreementId;
+    private String contractAgreementId;
     @JsonProperty("counterPartyAddress")
-    String counterPartyAddress;
+    private String counterPartyAddress;
     @JsonProperty("errorDetail")
-    String errorDetail;
+    private String errorDetail;
     @JsonProperty("id")
-    String id;
+    private String id;
     @JsonProperty("protocol")
-    String protocol;
+    private String protocol;
     @JsonProperty("state")
-    String state;
+    private String state;
     @JsonProperty("type")
-    String type;
+    private String type;
 
 }

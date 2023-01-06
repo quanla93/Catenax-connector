@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class OfferRespornDTO {
 
     @JsonProperty("id")
-    String id;
+    private String id;
 
 }

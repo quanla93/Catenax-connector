@@ -8,24 +8,23 @@ import java.util.Date;
 @Data
 public class ContractOfferDTO {
     @JsonProperty("id")
-    String id;
+    private String id;
     @JsonProperty("policy")
-    PolicyDTO policy;
+    private PolicyDTO policy;
     @JsonProperty("asset")
-    AssetDTO asset;
+    private AssetDTO asset;
     @JsonProperty("assetId")
-    String assetId;
+    private String assetId;
     @JsonProperty("provider")
-    String provider;
+    private String provider;
     @JsonProperty("consumer")
-    String consumer;
-
+    private String consumer;
     @JsonProperty("offerStart")
-    Date offerStart;
+    private Date offerStart;
     @JsonProperty("offerEnd")
-    Date offerEnd;
+    private Date offerEnd;
     @JsonProperty("contractStart")
-    Date contractStart;
+    private Date contractStart;
     @JsonProperty("contractEnd")
-    Date contractEnd;
+    private Date contractEnd;
 }

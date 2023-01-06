@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class CatalogDTO {
     @JsonProperty("id")
-    String id;
+    private String id;
     @JsonProperty("contractOffers")
-    List<ContractOfferDTO> contractOffers;
+    private List<ContractOfferDTO> contractOffers;
 }

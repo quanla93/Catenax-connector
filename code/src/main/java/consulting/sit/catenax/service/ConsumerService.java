@@ -7,6 +7,7 @@ import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,15 +20,26 @@ import java.util.UUID;
 @Service
 public class ConsumerService {
 
-    private static final String DATADESTIANTION = "";
+    private static final String DATADESTIANTION = "{ \"type\": \"HttpProxy\" }";
+    private static final String MANAGEDRESOURCES = "false";
 
+    @Value("${sokrates.consumer.controlplane.url.contractoffer}")
+    private String contractOfferCatalogUrl;
+    @Value("${sokrates.consumer.controlplane.url.offerrespornid}")
+    private String requestOfferRespornUrl;
+
+    @Value("${sokrates.consumer.controlplane.url.offerrespornid}")
+    private String requestContractNegotiationIdUrl;
+
+    @Value("${sokrates.consumer.controlplane.url.InitiateTransfer}")
+    private String requestInitiateTransferUrl;
     @Autowired
     private WebClient.Builder webClientBuilder;
 
     public CatalogDTO getContractOfferCatalog(String providerUrl){
         CatalogDTO catalogDTO = webClientBuilder.build()
                 .get()
-                .uri("http://sokrates-edc-controlplane:30902/data/catalog?providerUrl=" + providerUrl)
+                .uri(contractOfferCatalogUrl + providerUrl)
                 .header("X-Api-Key", "password")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
@@ -39,7 +51,7 @@ public class ConsumerService {
     public OfferRespornDTO requestOfferResporn(OfferRequestDTO offerRequestDTO) {
         OfferRespornDTO offerRespornDTO = webClientBuilder.build()
                 .post()
-                .uri("http://sokrates-edc-controlplane:30902/data/contractnegotiations")
+                .uri(requestOfferRespornUrl)
                 .body(Mono.just(offerRequestDTO), OfferRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
@@ -55,7 +67,7 @@ public class ConsumerService {
             if (contractNegotiationsDTO.getContractAgreementId() == null) {
                 contractNegotiationsDTO = webClientBuilder.build()
                         .get()
-                        .uri("http://sokrates-edc-controlplane:30902/data/contractnegotiations/" + offerRespornDTO.getId())
+                        .uri(requestContractNegotiationIdUrl + offerRespornDTO.getId())
                         .header("X-Api-Key", "password")
                         .accept(MediaType.APPLICATION_JSON)
                         .retrieve()
@@ -78,13 +90,13 @@ public class ConsumerService {
         transferProcessRequestDTO.setConnectorAddress(offerRequestDTO.getConnectorAddress());
         transferProcessRequestDTO.setConnectorId(offerRequestDTO.getConnectorId());
         transferProcessRequestDTO.setContractId(contractNegotiationsDTO.getContractAgreementId());
-        transferProcessRequestDTO.setDataDestination("a");
-        transferProcessRequestDTO.setManagedResources("false");
+        transferProcessRequestDTO.setDataDestination(DATADESTIANTION);
+        transferProcessRequestDTO.setManagedResources(MANAGEDRESOURCES);
 
                TransferProcessRespornDTO transferProcessRespornDTO = webClientBuilder.build()
                 .post()
-                .uri("http://sokrates-edc-controlplane:30902/data/contractnegotiations")
-                .body(Mono.just(offerRequestDTO), OfferRequestDTO.class)
+                .uri(requestInitiateTransferUrl)
+                .body(Mono.just(transferProcessRequestDTO), TransferProcessRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
                 .bodyToMono(TransferProcessRespornDTO.class)

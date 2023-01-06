@@ -7,9 +7,9 @@ import lombok.Data;
 @Data
 public class AssetDTO {
     @JsonProperty("id")
-    String id;
+    private String id;
     @JsonProperty("createdAt")
-    String createdAt;
+    private String createdAt;
     @JsonProperty("properties")
-    JsonNode properties;
+    private JsonNode properties;
 }
