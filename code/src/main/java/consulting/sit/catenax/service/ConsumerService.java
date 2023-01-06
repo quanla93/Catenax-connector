@@ -5,6 +5,7 @@ import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.DataDestinationDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,10 +115,20 @@ public class ConsumerService {
                 .get()
                 .uri(edcConsumerBackend + "/" + transferProcessId)
                 .header("Accept", "application/octet-stream")
-                .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
     }
 
+    public StateDTO checkStateOfTheTransfer(final String transferId) {
+        StateDTO stateDTO = webClientBuilder.build()
+                .get()
+                .uri(edcConsumerControlplane + INITIATETRANSFERURL + "/" + transferId + "/state")
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(StateDTO.class)
+                .block();
+
+        return stateDTO;
+    }
 }

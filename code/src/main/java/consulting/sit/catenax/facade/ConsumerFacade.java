@@ -4,6 +4,7 @@ import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.service.ConsumerService;
@@ -36,5 +37,10 @@ public class ConsumerFacade {
     public Optional<String> getDataTransferProcess(final String transferProcessId) {
         String data = consumerService.getTransferProcessData(transferProcessId);
         return Optional.of(data);
+    }
+
+    public Optional<StateDTO> checkStateOfTheTransferProcess(final String transferId) {
+        StateDTO stateDTO = consumerService.checkStateOfTheTransfer(transferId);
+        return Optional.of(stateDTO);
     }
 }

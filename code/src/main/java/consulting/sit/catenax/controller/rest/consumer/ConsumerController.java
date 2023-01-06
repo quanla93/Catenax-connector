@@ -4,6 +4,7 @@ package consulting.sit.catenax.controller.rest.consumer;
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
+import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.facade.ConsumerFacade;
@@ -74,23 +75,23 @@ public class ConsumerController {
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
-//    @Operation(
-//            summary = "Check State of the Transfer Process."
-//            , description = "Check State of the Transfer Process."
-//            , responses = {
-//    })
-//    @GetMapping(value = "/transferprocess/{transferId}/state", produces = {MediaType.APPLICATION_JSON_VALUE})
-//    public ResponseEntity<CatalogDTO> checkStateOfTransferProcess(
-//            @Parameter(description = "Check State of the Transfer Process", in = ParameterIn.DEFAULT, required = true)
-//            @PathVariable("transferId") final String transferId)
-//    {
-//        final HttpHeaders headers = new HttpHeaders();
-//        Optional<CatalogDTO> catalogDTOOpt = getConsumerFacade().getContractOfferCatalog(providerUrl);
-//        if (catalogDTOOpt.isPresent()) {
-//            return new ResponseEntity<>(catalogDTOOpt.get(), headers, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
-//    }
+    @Operation(
+            summary = "Check State of the Transfer Process."
+            , description = "Check State of the Transfer Process."
+            , responses = {
+    })
+    @GetMapping(value = "/transferprocess/{transferId}/state", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<StateDTO> checkStateOfTransferProcess(
+            @Parameter(description = "Check State of the Transfer Process", in = ParameterIn.DEFAULT, required = true)
+            @PathVariable("transferId") final String transferId)
+    {
+        final HttpHeaders headers = new HttpHeaders();
+        Optional<StateDTO> stateDTOOpt = getConsumerFacade().checkStateOfTheTransferProcess(transferId);
+        if (stateDTOOpt.isPresent()) {
+            return new ResponseEntity<>(stateDTOOpt.get(), headers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+    }
 
     protected ConsumerFacade getConsumerFacade() {
         return consumerFacade;
