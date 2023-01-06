@@ -32,4 +32,9 @@ public class ConsumerFacade {
         TransferProcessRespornDTO transferProcessRespornDTO = consumerService.requestInitiateTransfer(contractNegotiationsDTO, offerRequestDTO);
         return Optional.of(transferProcessRespornDTO);
     }
+
+    public Optional<String> getDataTransferProcess(final String transferProcessId) {
+        String data = consumerService.getTransferProcessData(transferProcessId);
+        return Optional.of(data);
+    }
 }

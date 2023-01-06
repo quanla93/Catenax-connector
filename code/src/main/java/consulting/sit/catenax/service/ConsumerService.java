@@ -30,6 +30,8 @@ public class ConsumerService {
     @Value("${edc.consumer.controlplane}")
     private String edcConsumerControlplane;
 
+    @Value("${edc.consumer.backend}")
+    private String edcConsumerBackend;
     @Autowired
     private WebClient.Builder webClientBuilder;
 
@@ -58,6 +60,7 @@ public class ConsumerService {
                 .block();
         return offerRespornDTO;
     }
+
     public ContractNegotiationsDTO requestContractNegotiationID(OfferRespornDTO offerRespornDTO) {
         ContractNegotiationsDTO contractNegotiationsDTO = new ContractNegotiationsDTO();
         for (int i=1; i <= 5; i ++) {
@@ -102,8 +105,19 @@ public class ConsumerService {
                 .timeout(Duration.ofMillis(10_000))
                 .delaySubscription(Duration.ofMillis(2000))
                 .block();
-
+        transferProcessRespornDTO.setTransferProcessId(transferProcessRequestDTO.getId());
         return transferProcessRespornDTO;
+    }
+
+    public String getTransferProcessData(String transferProcessId){
+        return webClientBuilder.build()
+                .get()
+                .uri(edcConsumerBackend + "/" + transferProcessId)
+                .header("Accept", "application/octet-stream")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
     }
 
 }

@@ -9,4 +9,8 @@ public class TransferProcessRespornDTO {
     @JsonProperty("id")
     private String id;
 
+    @JsonProperty("transfer_process_id")
+    private String transferProcessId;
+
+
 }
