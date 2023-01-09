@@ -2,11 +2,9 @@ package consulting.sit.catenax.controller.rest.consumer;
 
 
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
-import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessResponseDTO;
 import consulting.sit.catenax.facade.ConsumerFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,13 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
@@ -61,14 +57,14 @@ public class ConsumerController {
             summary = " Request a Contract Negotiation ID."
             , description = " Request a Contract Negotiation ID.")
     @PostMapping(value = "/contractnegotiations", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<TransferProcessRespornDTO> requestContractNegotiations(
+    public ResponseEntity<TransferProcessResponseDTO> requestContractNegotiations(
             @Parameter(description = "OfferRequestDTO", in = ParameterIn.DEFAULT, required = true)
             @RequestBody final OfferRequestDTO offerRequestDTO)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Optional<TransferProcessRespornDTO> transferProcessRespornDTO = getConsumerFacade().requestContractNegotiations(offerRequestDTO);
+        Optional<TransferProcessResponseDTO> transferProcessRespornDTO = getConsumerFacade().requestContractNegotiations(offerRequestDTO);
         if (transferProcessRespornDTO.isPresent()) {
             return new ResponseEntity<>(transferProcessRespornDTO.get(), headers, HttpStatus.OK);
         }

@@ -64,6 +64,7 @@ public class ProviderController {
 //            return new ResponseEntity<>(catalogDTOOpt.get(), headers, HttpStatus.OK);
 //        }
 //        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+        return null;
     }
 
     protected ProviderFacade getProviderFacade() {
