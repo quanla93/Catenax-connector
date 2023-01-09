@@ -4,7 +4,7 @@ import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.DataDestinationDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
-import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
@@ -28,10 +28,10 @@ public class ConsumerService {
     private static final String CONTRACTNEGOTIATIONIDURL = "/data/contractnegotiations";
     private static final String INITIATETRANSFERURL = "/data/transferprocess";
 
-    @Value("${edc.consumer.controlplane}")
+    @Value("${edc.consumer.control.plane}")
     private String edcConsumerControlplane;
 
-    @Value("${edc.consumer.backend}")
+    @Value("${edc.consumer.backend.application}")
     private String edcConsumerBackend;
     @Autowired
     private WebClient.Builder webClientBuilder;
@@ -48,27 +48,27 @@ public class ConsumerService {
 
         return catalogDTO;
     }
-    public OfferRespornDTO requestOfferResporn(OfferRequestDTO offerRequestDTO) {
-        OfferRespornDTO offerRespornDTO = webClientBuilder.build()
+    public OfferResponseDTO requestOfferResporn(OfferRequestDTO offerRequestDTO) {
+        OfferResponseDTO offerResponseDTO = webClientBuilder.build()
                 .post()
                 .uri(edcConsumerControlplane + CONTRACTNEGOTIATIONIDURL)
                 .body(Mono.just(offerRequestDTO), OfferRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
-                .bodyToMono(OfferRespornDTO.class)
+                .bodyToMono(OfferResponseDTO.class)
                 .timeout(Duration.ofMillis(10_000))
-                .delaySubscription(Duration.ofMillis(2000))
+                .delaySubscription(Duration.ofMillis(500))
                 .block();
-        return offerRespornDTO;
+        return offerResponseDTO;
     }
 
-    public ContractNegotiationsDTO requestContractNegotiationID(OfferRespornDTO offerRespornDTO) {
+    public ContractNegotiationsDTO requestContractNegotiationID(OfferResponseDTO offerResponseDTO) {
         ContractNegotiationsDTO contractNegotiationsDTO = new ContractNegotiationsDTO();
         for (int i=1; i <= 5; i ++) {
             if (contractNegotiationsDTO.getContractAgreementId() == null) {
                 contractNegotiationsDTO = webClientBuilder.build()
                         .get()
-                        .uri(edcConsumerControlplane + CONTRACTNEGOTIATIONIDURL + "/" + offerRespornDTO.getId())
+                        .uri(edcConsumerControlplane + CONTRACTNEGOTIATIONIDURL + "/" + offerResponseDTO.getId())
                         .header("X-Api-Key", "password")
                         .accept(MediaType.APPLICATION_JSON)
                         .retrieve()
@@ -104,7 +104,7 @@ public class ConsumerService {
                 .retrieve()
                 .bodyToMono(TransferProcessRespornDTO.class)
                 .timeout(Duration.ofMillis(10_000))
-                .delaySubscription(Duration.ofMillis(2000))
+                .delaySubscription(Duration.ofMillis(500))
                 .block();
         transferProcessRespornDTO.setTransferProcessId(transferProcessRequestDTO.getId());
         return transferProcessRespornDTO;

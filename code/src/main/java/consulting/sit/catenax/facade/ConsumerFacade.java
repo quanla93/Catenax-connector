@@ -3,9 +3,8 @@ package consulting.sit.catenax.facade;
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
-import consulting.sit.catenax.controller.dtos.consumer.OfferRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
 import consulting.sit.catenax.service.ConsumerService;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,8 @@ public class ConsumerFacade {
     }
 
     public Optional<TransferProcessRespornDTO> requestContractNegotiations(final OfferRequestDTO offerRequestDTO) {
-        OfferRespornDTO offerRespornDTO = consumerService.requestOfferResporn(offerRequestDTO);
-        ContractNegotiationsDTO contractNegotiationsDTO = consumerService.requestContractNegotiationID(offerRespornDTO);
+        OfferResponseDTO offerResponseDTO = consumerService.requestOfferResporn(offerRequestDTO);
+        ContractNegotiationsDTO contractNegotiationsDTO = consumerService.requestContractNegotiationID(offerResponseDTO);
         TransferProcessRespornDTO transferProcessRespornDTO = consumerService.requestInitiateTransfer(contractNegotiationsDTO, offerRequestDTO);
         return Optional.of(transferProcessRespornDTO);
     }
