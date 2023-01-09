@@ -64,9 +64,9 @@ public class ConsumerController {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        Optional<TransferProcessResponseDTO> transferProcessRespornDTO = getConsumerFacade().requestContractNegotiations(offerRequestDTO);
-        if (transferProcessRespornDTO.isPresent()) {
-            return new ResponseEntity<>(transferProcessRespornDTO.get(), headers, HttpStatus.OK);
+        Optional<TransferProcessResponseDTO> transferProcessResponseDTO = getConsumerFacade().requestContractNegotiations(offerRequestDTO);
+        if (transferProcessResponseDTO.isPresent()) {
+            return new ResponseEntity<>(transferProcessResponseDTO.get(), headers, HttpStatus.OK);
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }

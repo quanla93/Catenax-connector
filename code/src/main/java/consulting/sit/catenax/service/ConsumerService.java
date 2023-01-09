@@ -7,7 +7,7 @@ import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRespornDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -48,7 +48,7 @@ public class ConsumerService {
 
         return catalogDTO;
     }
-    public OfferResponseDTO requestOfferResporn(OfferRequestDTO offerRequestDTO) {
+    public OfferResponseDTO requestOfferResponse(OfferRequestDTO offerRequestDTO) {
         OfferResponseDTO offerResponseDTO = webClientBuilder.build()
                 .post()
                 .uri(edcConsumerControlplane + CONTRACTNEGOTIATIONIDURL)
@@ -83,7 +83,7 @@ public class ConsumerService {
         return contractNegotiationsDTO;
     }
 
-    public TransferProcessRespornDTO requestInitiateTransfer(ContractNegotiationsDTO contractNegotiationsDTO, OfferRequestDTO offerRequestDTO) {
+    public TransferProcessResponseDTO requestInitiateTransfer(ContractNegotiationsDTO contractNegotiationsDTO, OfferRequestDTO offerRequestDTO) {
         TransferProcessRequestDTO transferProcessRequestDTO = new TransferProcessRequestDTO();
         UUID randomId = UUID.randomUUID();
         transferProcessRequestDTO.setId(randomId.toString());
@@ -96,18 +96,18 @@ public class ConsumerService {
         dataDestinationDTO.setType(TYPE);
         transferProcessRequestDTO.setDataDestination(dataDestinationDTO);
 
-               TransferProcessRespornDTO transferProcessRespornDTO = webClientBuilder.build()
+               TransferProcessResponseDTO transferProcessResponseDTO = webClientBuilder.build()
                 .post()
                 .uri(edcConsumerControlplane + INITIATETRANSFERURL)
                 .body(Mono.just(transferProcessRequestDTO), TransferProcessRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
-                .bodyToMono(TransferProcessRespornDTO.class)
+                .bodyToMono(TransferProcessResponseDTO.class)
                 .timeout(Duration.ofMillis(10_000))
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
-        transferProcessRespornDTO.setTransferProcessId(transferProcessRequestDTO.getId());
-        return transferProcessRespornDTO;
+        transferProcessResponseDTO.setTransferProcessId(transferProcessRequestDTO.getId());
+        return transferProcessResponseDTO;
     }
 
     public String getTransferProcessData(String transferProcessId){
