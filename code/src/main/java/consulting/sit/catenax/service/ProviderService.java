@@ -1,17 +1,21 @@
 package consulting.sit.catenax.service;
 
+import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.MessageErrorDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetRequestDTO;
+import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 
 @Service
 public class ProviderService {
@@ -35,6 +39,19 @@ public class ProviderService {
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
 
+    }
+
+    public List<AssetResponseDTO> getAllAssets(){
+        List<AssetResponseDTO> assetResponseDTOs = (List<AssetResponseDTO>) webClientBuilder.build()
+                .get()
+                .uri(edcProviderControlplane + POSTANASSET)
+                .header("X-Api-Key", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(AssetResponseDTO.class)
+                .block();
+
+        return assetResponseDTOs;
     }
 
     private static Mono<ClientResponse> exchangeFilterResponseProcessor(ClientResponse response) {

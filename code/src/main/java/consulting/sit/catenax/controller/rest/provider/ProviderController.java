@@ -58,13 +58,12 @@ public class ProviderController {
     @GetMapping(value = "/assets", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<AssetResponseDTO>> getAllAssets()
     {
-//        final HttpHeaders headers = new HttpHeaders();
-//        Optional<CatalogDTO> catalogDTOOpt = getConsumerFacade().getContractOfferCatalog(providerUrl);
-//        if (catalogDTOOpt.isPresent()) {
-//            return new ResponseEntity<>(catalogDTOOpt.get(), headers, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
-        return null;
+        final HttpHeaders headers = new HttpHeaders();
+        Optional<List<AssetResponseDTO>> assetResponseDTOs = getProviderFacade().getAllAssets();
+        if (assetResponseDTOs.isPresent()) {
+            return new ResponseEntity<>(assetResponseDTOs.get(), headers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
     protected ProviderFacade getProviderFacade() {
