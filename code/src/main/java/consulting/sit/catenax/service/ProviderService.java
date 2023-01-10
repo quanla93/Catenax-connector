@@ -3,8 +3,11 @@ package consulting.sit.catenax.service;
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.MessageErrorDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
+import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
+import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,10 @@ import java.util.List;
 public class ProviderService {
 
     private static final String POSTANASSET = "/data/assets";
+
+    private static final String POLICYDEFINITIONS = "/data/policydefinitions";
+
+    private static final String CONTRACTDEFINITIONS = "/data/contractdefinitions";
     @Value("${edc.provider.control.plane}")
     private String edcProviderControlplane;
 
@@ -52,6 +59,104 @@ public class ProviderService {
                 .block();
 
         return assetResponseDTOs;
+    }
+
+    public void createPolicyDefinitions(PolicyDefinitionsDTO policyDefinitionsDTO) {
+        webClientBuilder.build()
+                .post()
+                .uri(edcProviderControlplane + POLICYDEFINITIONS)
+                .body(Mono.just(policyDefinitionsDTO), PolicyDefinitionsDTO.class)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(PolicyDefinitionsDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public void createContractDefinitions(ContractDefinitionDTO contractDefinitionDTO) {
+        webClientBuilder.build()
+                .post()
+                .uri(edcProviderControlplane + CONTRACTDEFINITIONS)
+                .body(Mono.just(contractDefinitionDTO), ContractDefinitionDTO.class)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(ContractDefinitionDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public ContractDefinitionDTO getContractDefinition(String contractDefinitionId) {
+        return  webClientBuilder.build()
+                .get()
+                .uri(edcProviderControlplane + CONTRACTDEFINITIONS + "/" + contractDefinitionId)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(ContractDefinitionDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public void deleteContractDefinitions(String contractDefinitionId) {
+        webClientBuilder.build()
+                .delete()
+                .uri(edcProviderControlplane + CONTRACTDEFINITIONS + "/" + contractDefinitionId)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(ContractDefinitionDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public PolicyDefinitionsDTO getPolicyDefinition(String policyDefinitionId) {
+        return  webClientBuilder.build()
+                .get()
+                .uri(edcProviderControlplane + POLICYDEFINITIONS + "/" + policyDefinitionId)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(PolicyDefinitionsDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public void deletePolicyDefinitions(String policyDefinitionId) {
+        webClientBuilder.build()
+                .delete()
+                .uri(edcProviderControlplane + POLICYDEFINITIONS + "/" + policyDefinitionId)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(PolicyDefinitionsDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public AssetResponseDTO getAsset(String assetId) {
+        return  webClientBuilder.build()
+                .get()
+                .uri(edcProviderControlplane + POSTANASSET + "/" + assetId)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(AssetResponseDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
+    }
+
+    public void deleteAsset(String assetId) {
+        webClientBuilder.build()
+                .delete()
+                .uri(edcProviderControlplane + POSTANASSET + "/" + assetId)
+                .header("X-Api-Key", "password")
+                .retrieve()
+                .bodyToMono(AssetResponseDTO.class)
+                .timeout(Duration.ofMillis(10_000))
+                .delaySubscription(Duration.ofMillis(500))
+                .block();
     }
 
     private static Mono<ClientResponse> exchangeFilterResponseProcessor(ClientResponse response) {

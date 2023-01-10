@@ -4,6 +4,8 @@ import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
+import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsDTO;
 import consulting.sit.catenax.facade.ProviderFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,7 +15,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +55,77 @@ public class ProviderController {
     }
 
     @Operation(
+            summary = "Create Policy Definitions."
+            , description = "Create Policy Definitions.")
+    @PostMapping(value = "/policydefinitions", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void createPolicyDefinitions(
+            @Parameter(description = "PolicyDefinitionsDTO", in = ParameterIn.DEFAULT, required = true)
+            @RequestBody final PolicyDefinitionsDTO policyDefinitionsDTO)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        getProviderFacade().createPolicyDefinitions(policyDefinitionsDTO);
+    }
+
+    @Operation(
+            summary = "Create Contract Definitions."
+            , description = "Create Contract Definitions.")
+    @PostMapping(value = "/contractdefinitions", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void createContractDefinitions(
+            @Parameter(description = "ContractDefinitionDTO", in = ParameterIn.DEFAULT, required = true)
+            @RequestBody final ContractDefinitionDTO contractDefinitionDTO)
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        getProviderFacade().createContractDefinitions(contractDefinitionDTO);
+    }
+
+    @Operation(
+            summary = "Delete Contract Definitions."
+            , description = "Delete Contract Definitions.")
+    @DeleteMapping(value = "/contractdefinitions/{contractDefinitionId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteContractDefinitions(
+            @Parameter(description = "ContractDefinitionDTO", in = ParameterIn.DEFAULT, required = true)
+            @PathVariable("contractDefinitionId") final String contractDefinitionId) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        getProviderFacade().deleteContractDefinitions(contractDefinitionId);
+    }
+
+    @Operation(
+            summary = "Delete Policy Definitions."
+            , description = "Delete Policy Definitions.")
+    @DeleteMapping(value = "/policydefinitions/{policyDefinitionId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deletePolicyDefinitions(
+            @Parameter(description = "PolicyDefinitionDTO", in = ParameterIn.DEFAULT, required = true)
+            @PathVariable("policyDefinitionId") final String policyDefinitionId) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        getProviderFacade().deletePolicyDefinitions(policyDefinitionId);
+    }
+
+    @Operation(
+            summary = "Delete Asset."
+            , description = "Delete Asset.")
+    @DeleteMapping(value = "/assets/{assetId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteAsset(
+            @Parameter(description = "AssetsResponseDTO", in = ParameterIn.DEFAULT, required = true)
+            @PathVariable("assetId") final String assetId) throws Exception {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        getProviderFacade().deleteAsset(assetId);
+    }
+    @Operation(
             summary = "Get contract offer catalog."
             , description = "Get contract offer catalog."
             , responses = {
@@ -65,6 +140,7 @@ public class ProviderController {
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
+
 
     protected ProviderFacade getProviderFacade() {
         return this.providerFacade;
