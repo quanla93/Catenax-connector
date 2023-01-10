@@ -5,10 +5,13 @@ import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessResponseDTO;
+import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsResponseDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessDTO;
+import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import consulting.sit.catenax.service.ConsumerService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,11 +29,11 @@ public class ConsumerFacade {
         return Optional.of(catalogDTO);
     }
 
-    public Optional<TransferProcessResponseDTO> requestContractNegotiations(final OfferRequestDTO offerRequestDTO) {
+    public Optional<ContractNegotiationsResponseDTO> requestContractNegotiations(final OfferRequestDTO offerRequestDTO) {
         OfferResponseDTO offerResponseDTO = consumerService.requestOfferResponse(offerRequestDTO);
         ContractNegotiationsDTO contractNegotiationsDTO = consumerService.requestContractNegotiationID(offerResponseDTO);
-        TransferProcessResponseDTO transferProcessResponseDTO = consumerService.requestInitiateTransfer(contractNegotiationsDTO, offerRequestDTO);
-        return Optional.of(transferProcessResponseDTO);
+        ContractNegotiationsResponseDTO contractNegotiationsResponseDTO = consumerService.requestInitiateTransfer(contractNegotiationsDTO, offerRequestDTO);
+        return Optional.of(contractNegotiationsResponseDTO);
     }
 
     public Optional<String> getDataTransferProcess(final String transferProcessId) {
@@ -42,4 +45,13 @@ public class ConsumerFacade {
         StateDTO stateDTO = consumerService.checkStateOfTheTransfer(transferId);
         return Optional.of(stateDTO);
     }
+
+    public Optional<List<TransferProcessDTO>> getAllTransferProcess() throws Exception {
+        List<TransferProcessDTO> transferProcessDTOs = consumerService.getAllTransferProcessData();
+        if (transferProcessDTOs.isEmpty()) {
+            throw new Exception("Can't find the Transfer Process");
+        }
+        return Optional.of(transferProcessDTOs);
+    }
+
 }

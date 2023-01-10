@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class TransferProcessResponseDTO {
+public class ContractNegotiationsResponseDTO {
 
     @JsonProperty("id")
     private String id;

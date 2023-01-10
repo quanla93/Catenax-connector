@@ -6,17 +6,22 @@ import consulting.sit.catenax.controller.dtos.consumer.DataDestinationDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessRequestDTO;
-import consulting.sit.catenax.controller.dtos.consumer.TransferProcessResponseDTO;
+import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsRequestDTO;
+import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsResponseDTO;
+import consulting.sit.catenax.controller.dtos.consumer.TransferProcessDTO;
+import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -83,31 +88,46 @@ public class ConsumerService {
         return contractNegotiationsDTO;
     }
 
-    public TransferProcessResponseDTO requestInitiateTransfer(ContractNegotiationsDTO contractNegotiationsDTO, OfferRequestDTO offerRequestDTO) {
-        TransferProcessRequestDTO transferProcessRequestDTO = new TransferProcessRequestDTO();
+    public ContractNegotiationsResponseDTO requestInitiateTransfer(ContractNegotiationsDTO contractNegotiationsDTO, OfferRequestDTO offerRequestDTO) {
+        ContractNegotiationsRequestDTO contractNegotiationsRequestDTO = new ContractNegotiationsRequestDTO();
         UUID randomId = UUID.randomUUID();
-        transferProcessRequestDTO.setId(randomId.toString());
-        transferProcessRequestDTO.setAssetId(offerRequestDTO.getOffer().getAssetId());
-        transferProcessRequestDTO.setConnectorAddress(offerRequestDTO.getConnectorAddress());
-        transferProcessRequestDTO.setConnectorId(offerRequestDTO.getConnectorId());
-        transferProcessRequestDTO.setContractId(contractNegotiationsDTO.getContractAgreementId());
-        transferProcessRequestDTO.setManagedResources(MANAGEDRESOURCES);
+        contractNegotiationsRequestDTO.setId(randomId.toString());
+        contractNegotiationsRequestDTO.setAssetId(offerRequestDTO.getOffer().getAssetId());
+        contractNegotiationsRequestDTO.setConnectorAddress(offerRequestDTO.getConnectorAddress());
+        contractNegotiationsRequestDTO.setConnectorId(offerRequestDTO.getConnectorId());
+        contractNegotiationsRequestDTO.setContractId(contractNegotiationsDTO.getContractAgreementId());
+        contractNegotiationsRequestDTO.setManagedResources(MANAGEDRESOURCES);
         DataDestinationDTO dataDestinationDTO = new DataDestinationDTO();
         dataDestinationDTO.setType(TYPE);
-        transferProcessRequestDTO.setDataDestination(dataDestinationDTO);
+        contractNegotiationsRequestDTO.setDataDestination(dataDestinationDTO);
 
-               TransferProcessResponseDTO transferProcessResponseDTO = webClientBuilder.build()
+               ContractNegotiationsResponseDTO contractNegotiationsResponseDTO = webClientBuilder.build()
                 .post()
                 .uri(edcConsumerControlplane + INITIATETRANSFERURL)
-                .body(Mono.just(transferProcessRequestDTO), TransferProcessRequestDTO.class)
+                .body(Mono.just(contractNegotiationsRequestDTO), ContractNegotiationsRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
-                .bodyToMono(TransferProcessResponseDTO.class)
+                .bodyToMono(ContractNegotiationsResponseDTO.class)
                 .timeout(Duration.ofMillis(10_000))
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
-        transferProcessResponseDTO.setTransferProcessId(transferProcessRequestDTO.getId());
-        return transferProcessResponseDTO;
+        contractNegotiationsResponseDTO.setTransferProcessId(contractNegotiationsRequestDTO.getId());
+        return contractNegotiationsResponseDTO;
+    }
+
+    public List<TransferProcessDTO> getAllTransferProcessData(){
+        Flux<TransferProcessDTO> transferProcessDTOFlux = webClientBuilder.build()
+                .get()
+                .uri(edcConsumerControlplane + INITIATETRANSFERURL)
+                .header("X-Api-Key", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(TransferProcessDTO.class);
+
+        List<TransferProcessDTO> transferProcessDTOs = transferProcessDTOFlux
+                .collect(Collectors.toList())
+                .share().block();
+        return transferProcessDTOs;
     }
 
     public String getTransferProcessData(String transferProcessId){

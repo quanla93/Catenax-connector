@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransferProcessRequestDTO {
+public class ContractNegotiationsRequestDTO {
 
     @JsonProperty("id")
     private String id;
