@@ -4,7 +4,9 @@ package consulting.sit.catenax.facade;
 import consulting.sit.catenax.controller.dtos.provider.AssetRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionDTO;
-import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsDTO;
+import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionResponseDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsRequestDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsResponseDTO;
 import consulting.sit.catenax.service.ProviderService;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,9 @@ public class ProviderFacade {
         }
     }
 
-    public void createPolicyDefinitions(PolicyDefinitionsDTO policyDefinitionsDTO) {
-        if (policyDefinitionsDTO != null) {
-            providerService.createPolicyDefinitions(policyDefinitionsDTO);
+    public void createPolicyDefinitions(PolicyDefinitionsRequestDTO policyDefinitionsRequestDTO) {
+        if (policyDefinitionsRequestDTO != null) {
+            providerService.createPolicyDefinitions(policyDefinitionsRequestDTO);
         }
     }
 
@@ -48,8 +50,8 @@ public class ProviderFacade {
     }
 
     public void deletePolicyDefinitions(String policyDefinitionId) throws Exception {
-        PolicyDefinitionsDTO policyDefinitionsDTO = providerService.getPolicyDefinition(policyDefinitionId);
-        if (policyDefinitionsDTO != null) {
+        PolicyDefinitionsRequestDTO policyDefinitionsRequestDTO = providerService.getPolicyDefinition(policyDefinitionId);
+        if (policyDefinitionsRequestDTO != null) {
             providerService.deletePolicyDefinitions(policyDefinitionId);
         } else {
             throw new Exception("Can't find the Policy Definition");
@@ -64,11 +66,27 @@ public class ProviderFacade {
             throw new Exception("Can't find the Asset");
         }
     }
-    public Optional<List<AssetResponseDTO>> getAllAssets() {
+    public Optional<List<AssetResponseDTO>> getAllAssets() throws Exception {
         List<AssetResponseDTO> assetResponseDTOs = providerService.getAllAssets();
         if (assetResponseDTOs.isEmpty()) {
-            return null;
+            throw new Exception("Can't find the Asset");
         }
         return Optional.of(assetResponseDTOs);
+    }
+
+    public Optional<List<PolicyDefinitionsResponseDTO>> getAllPolicyDefinitions() throws Exception {
+        List<PolicyDefinitionsResponseDTO> policyDefinitionsResponseDTOs = providerService.getAllPolicyDefinitions();
+        if (policyDefinitionsResponseDTOs.isEmpty()) {
+            throw new Exception("Can't find the Asset");
+        }
+        return Optional.of(policyDefinitionsResponseDTOs);
+    }
+
+    public Optional<List<ContractDefinitionResponseDTO>> getAllContractDefinitions() throws Exception {
+        List<ContractDefinitionResponseDTO> contractDefinitionResponseDTOs = providerService.getAllContractDefinitions();
+        if (contractDefinitionResponseDTOs.isEmpty()) {
+            throw new Exception("Can't find the Asset");
+        }
+        return Optional.of(contractDefinitionResponseDTOs);
     }
 }

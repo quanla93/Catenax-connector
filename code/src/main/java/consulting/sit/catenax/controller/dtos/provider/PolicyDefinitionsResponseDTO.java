@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class PolicyDefinitionsDTO {
+public class PolicyDefinitionsResponseDTO {
 
+    private String createdAt;
     private String id;
     @JsonProperty("policy")
-    private PolicyDTO policy;
+    private PolicyResponseDTO policy;
 }

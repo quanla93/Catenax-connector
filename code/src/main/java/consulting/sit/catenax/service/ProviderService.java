@@ -1,13 +1,12 @@
 package consulting.sit.catenax.service;
 
-import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.MessageErrorDTO;
-import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
-import consulting.sit.catenax.controller.dtos.consumer.OfferResponseDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionDTO;
-import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsDTO;
+import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionResponseDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsRequestDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,10 +14,12 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProviderService {
@@ -49,26 +50,58 @@ public class ProviderService {
     }
 
     public List<AssetResponseDTO> getAllAssets(){
-        List<AssetResponseDTO> assetResponseDTOs = (List<AssetResponseDTO>) webClientBuilder.build()
+        Flux<AssetResponseDTO> assetDTOs = webClientBuilder.build()
                 .get()
                 .uri(edcProviderControlplane + POSTANASSET)
                 .header("X-Api-Key", "password")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(AssetResponseDTO.class)
-                .block();
+                .bodyToFlux(AssetResponseDTO.class);
 
+        List<AssetResponseDTO> assetResponseDTOs = assetDTOs
+                .collect(Collectors.toList())
+                .share().block();
         return assetResponseDTOs;
     }
 
-    public void createPolicyDefinitions(PolicyDefinitionsDTO policyDefinitionsDTO) {
+    public List<PolicyDefinitionsResponseDTO> getAllPolicyDefinitions(){
+        Flux<PolicyDefinitionsResponseDTO> policyDefinitionsResponseDTOFlux = webClientBuilder.build()
+                .get()
+                .uri(edcProviderControlplane + POLICYDEFINITIONS)
+                .header("X-Api-Key", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(PolicyDefinitionsResponseDTO.class);
+
+        List<PolicyDefinitionsResponseDTO> policyDefinitionsResponseDTOs = policyDefinitionsResponseDTOFlux
+                .collect(Collectors.toList())
+                .share().block();
+        return policyDefinitionsResponseDTOs;
+    }
+
+    public List<ContractDefinitionResponseDTO> getAllContractDefinitions(){
+        Flux<ContractDefinitionResponseDTO> contractDefinitionResponseDTOFlux = webClientBuilder.build()
+                .get()
+                .uri(edcProviderControlplane + CONTRACTDEFINITIONS)
+                .header("X-Api-Key", "password")
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToFlux(ContractDefinitionResponseDTO.class);
+
+        List<ContractDefinitionResponseDTO> contractDefinitionResponseDTOs = contractDefinitionResponseDTOFlux
+                .collect(Collectors.toList())
+                .share().block();
+        return contractDefinitionResponseDTOs;
+    }
+
+    public void createPolicyDefinitions(PolicyDefinitionsRequestDTO policyDefinitionsRequestDTO) {
         webClientBuilder.build()
                 .post()
                 .uri(edcProviderControlplane + POLICYDEFINITIONS)
-                .body(Mono.just(policyDefinitionsDTO), PolicyDefinitionsDTO.class)
+                .body(Mono.just(policyDefinitionsRequestDTO), PolicyDefinitionsRequestDTO.class)
                 .header("X-Api-Key", "password")
                 .retrieve()
-                .bodyToMono(PolicyDefinitionsDTO.class)
+                .bodyToMono(PolicyDefinitionsRequestDTO.class)
                 .timeout(Duration.ofMillis(10_000))
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
@@ -111,13 +144,13 @@ public class ProviderService {
                 .block();
     }
 
-    public PolicyDefinitionsDTO getPolicyDefinition(String policyDefinitionId) {
+    public PolicyDefinitionsRequestDTO getPolicyDefinition(String policyDefinitionId) {
         return  webClientBuilder.build()
                 .get()
                 .uri(edcProviderControlplane + POLICYDEFINITIONS + "/" + policyDefinitionId)
                 .header("X-Api-Key", "password")
                 .retrieve()
-                .bodyToMono(PolicyDefinitionsDTO.class)
+                .bodyToMono(PolicyDefinitionsRequestDTO.class)
                 .timeout(Duration.ofMillis(10_000))
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
@@ -129,7 +162,7 @@ public class ProviderService {
                 .uri(edcProviderControlplane + POLICYDEFINITIONS + "/" + policyDefinitionId)
                 .header("X-Api-Key", "password")
                 .retrieve()
-                .bodyToMono(PolicyDefinitionsDTO.class)
+                .bodyToMono(PolicyDefinitionsRequestDTO.class)
                 .timeout(Duration.ofMillis(10_000))
                 .delaySubscription(Duration.ofMillis(500))
                 .block();

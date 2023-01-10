@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class PolicyDTO {
+public class PolicyRequestDTO {
 
     private List<JsonNode> prohibitions;
     private List<JsonNode> obligations;

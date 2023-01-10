@@ -3,11 +3,10 @@ package consulting.sit.catenax.controller.dtos.provider;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class AssetResponseDTOs {
+public class PolicyDefinitionsRequestDTO {
 
-    @JsonProperty("")
-    private List<AssetResponseDTO> assetResponseDTOs;
+    private String id;
+    @JsonProperty("policy")
+    private PolicyRequestDTO policy;
 }

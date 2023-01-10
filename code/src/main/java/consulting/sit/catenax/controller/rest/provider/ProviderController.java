@@ -1,11 +1,11 @@
 package consulting.sit.catenax.controller.rest.provider;
 
-import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
-import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetRequestDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionDTO;
-import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsDTO;
+import consulting.sit.catenax.controller.dtos.provider.ContractDefinitionResponseDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsRequestDTO;
+import consulting.sit.catenax.controller.dtos.provider.PolicyDefinitionsResponseDTO;
 import consulting.sit.catenax.facade.ProviderFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,12 +60,12 @@ public class ProviderController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void createPolicyDefinitions(
             @Parameter(description = "PolicyDefinitionsDTO", in = ParameterIn.DEFAULT, required = true)
-            @RequestBody final PolicyDefinitionsDTO policyDefinitionsDTO)
+            @RequestBody final PolicyDefinitionsRequestDTO policyDefinitionsRequestDTO)
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         headers.setContentType(MediaType.APPLICATION_JSON);
-        getProviderFacade().createPolicyDefinitions(policyDefinitionsDTO);
+        getProviderFacade().createPolicyDefinitions(policyDefinitionsRequestDTO);
     }
 
     @Operation(
@@ -126,12 +125,12 @@ public class ProviderController {
         getProviderFacade().deleteAsset(assetId);
     }
     @Operation(
-            summary = "Get contract offer catalog."
-            , description = "Get contract offer catalog."
+            summary = "Get all assets."
+            , description = "Get all assets."
             , responses = {
     })
     @GetMapping(value = "/assets", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<List<AssetResponseDTO>> getAllAssets()
+    public ResponseEntity<List<AssetResponseDTO>> getAllAssets() throws Exception
     {
         final HttpHeaders headers = new HttpHeaders();
         Optional<List<AssetResponseDTO>> assetResponseDTOs = getProviderFacade().getAllAssets();
@@ -141,7 +140,37 @@ public class ProviderController {
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
+    @Operation(
+            summary = "Get all policy definitions."
+            , description = "Get all policy definitions."
+            , responses = {
+    })
+    @GetMapping(value = "/policydefinitions", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<PolicyDefinitionsResponseDTO>> getAllPolicyDefinitions() throws Exception
+    {
+        final HttpHeaders headers = new HttpHeaders();
+        Optional<List<PolicyDefinitionsResponseDTO>> policyDefinitionsResponseDTOs = getProviderFacade().getAllPolicyDefinitions();
+        if (policyDefinitionsResponseDTOs.isPresent()) {
+            return new ResponseEntity<>(policyDefinitionsResponseDTOs.get(), headers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+    }
 
+    @Operation(
+            summary = "Get all contract definitions."
+            , description = "Get all contract definitions."
+            , responses = {
+    })
+    @GetMapping(value = "/contractdefinitions", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<List<ContractDefinitionResponseDTO>> getAllContractDefinitions() throws Exception
+    {
+        final HttpHeaders headers = new HttpHeaders();
+        Optional<List<ContractDefinitionResponseDTO>> contractDefinitionResponseDTOs = getProviderFacade().getAllContractDefinitions();
+        if (contractDefinitionResponseDTOs.isPresent()) {
+            return new ResponseEntity<>(contractDefinitionResponseDTOs.get(), headers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+    }
     protected ProviderFacade getProviderFacade() {
         return this.providerFacade;
     }
