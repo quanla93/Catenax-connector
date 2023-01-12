@@ -10,7 +10,9 @@ import consulting.sit.catenax.controller.dtos.consumer.TransferProcessDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
 import consulting.sit.catenax.service.ConsumerService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,10 +50,15 @@ public class ConsumerFacade {
 
     public Optional<List<TransferProcessDTO>> getAllTransferProcess() throws Exception {
         List<TransferProcessDTO> transferProcessDTOs = consumerService.getAllTransferProcessData();
-        if (transferProcessDTOs.isEmpty()) {
+        if (CollectionUtils.isEmpty(transferProcessDTOs)) {
             throw new Exception("Can't find the Transfer Process");
         }
         return Optional.of(transferProcessDTOs);
+    }
+
+    public Optional<String> lookupProviderUrl(final String assetIds) {
+        String lookupProviderUrl = consumerService.lookupProviderUrl(assetIds);
+        return Optional.of(lookupProviderUrl);
     }
 
 }

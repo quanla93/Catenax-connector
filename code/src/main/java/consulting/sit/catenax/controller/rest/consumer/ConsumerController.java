@@ -1,21 +1,28 @@
 package consulting.sit.catenax.controller.rest.consumer;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import consulting.sit.catenax.controller.dtos.consumer.CatalogDTO;
 import consulting.sit.catenax.controller.dtos.consumer.OfferRequestDTO;
 import consulting.sit.catenax.controller.dtos.consumer.StateDTO;
 import consulting.sit.catenax.controller.dtos.consumer.ContractNegotiationsResponseDTO;
 import consulting.sit.catenax.controller.dtos.consumer.TransferProcessDTO;
 import consulting.sit.catenax.controller.dtos.provider.AssetResponseDTO;
+
 import consulting.sit.catenax.facade.ConsumerFacade;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +30,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.DefaultUriBuilderFactory;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +41,12 @@ import java.util.Optional;
 @RequestMapping("/consumer/data")
 @Slf4j
 public class ConsumerController {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     private final ConsumerFacade consumerFacade;
 
@@ -107,7 +123,26 @@ public class ConsumerController {
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
-    
+
+    /**
+     * Lookup Asset
+     * @param assetIds
+     * @return
+     */
+    @GetMapping("/asset")
+    public ResponseEntity<String> lookupAsset(@RequestParam String assetIds) throws JsonMappingException, JsonProcessingException {
+//        SpecificAssetIdsDTO prod = objectMapper.readValue(assetIds, SpecificAssetIdsDTO.class);
+        // call API to lookup asset
+        Optional<String> providerUrlOpt = consumerFacade.lookupProviderUrl(assetIds);
+        final HttpHeaders headers = new HttpHeaders();
+        if (providerUrlOpt.isPresent()) {
+            return new ResponseEntity<>(providerUrlOpt.get(), headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     protected ConsumerFacade getConsumerFacade() {
         return consumerFacade;
     }
