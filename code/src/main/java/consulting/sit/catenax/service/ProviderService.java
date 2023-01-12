@@ -35,6 +35,12 @@ public class ProviderService {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
+    /**
+     * Create an assets
+     *
+     * @param assetRequestDTO
+     * @return
+     */
     public void createAnAssets(AssetRequestDTO assetRequestDTO) {
          webClientBuilder.build()
                 .post()
@@ -49,6 +55,12 @@ public class ProviderService {
 
     }
 
+    /**
+     * Get all assets
+     *
+     * @param
+     * @return
+     */
     public List<AssetResponseDTO> getAllAssets(){
         Flux<AssetResponseDTO> assetDTOs = webClientBuilder.build()
                 .get()
@@ -63,6 +75,13 @@ public class ProviderService {
                 .share().block();
         return assetResponseDTOs;
     }
+
+    /**
+     * Get all assets
+     *
+     * @param
+     * @return
+     */
 
     public List<PolicyDefinitionsResponseDTO> getAllPolicyDefinitions(){
         Flux<PolicyDefinitionsResponseDTO> policyDefinitionsResponseDTOFlux = webClientBuilder.build()
@@ -79,6 +98,13 @@ public class ProviderService {
         return policyDefinitionsResponseDTOs;
     }
 
+    /**
+     * Get All Contract Definitions
+     *
+     * @param
+     * @return
+     */
+
     public List<ContractDefinitionResponseDTO> getAllContractDefinitions(){
         Flux<ContractDefinitionResponseDTO> contractDefinitionResponseDTOFlux = webClientBuilder.build()
                 .get()
@@ -94,6 +120,13 @@ public class ProviderService {
         return contractDefinitionResponseDTOs;
     }
 
+    /**
+     * Create Policy Definitions
+     *
+     * @param policyDefinitionsRequestDTO
+     * @return
+     */
+
     public void createPolicyDefinitions(PolicyDefinitionsRequestDTO policyDefinitionsRequestDTO) {
         webClientBuilder.build()
                 .post()
@@ -106,6 +139,13 @@ public class ProviderService {
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
     }
+
+    /**
+     * Create Contract Definitions
+     *
+     * @param contractDefinitionDTO
+     * @return
+     */
 
     public void createContractDefinitions(ContractDefinitionDTO contractDefinitionDTO) {
         webClientBuilder.build()
@@ -120,6 +160,13 @@ public class ProviderService {
                 .block();
     }
 
+    /**
+     * Get Contract Definition
+     *
+     * @param contractDefinitionId
+     * @return
+     */
+
     public ContractDefinitionDTO getContractDefinition(String contractDefinitionId) {
         return  webClientBuilder.build()
                 .get()
@@ -131,6 +178,13 @@ public class ProviderService {
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
     }
+
+    /**
+     * Delete Contract Definitions
+     *
+     * @param contractDefinitionId
+     * @return
+     */
 
     public void deleteContractDefinitions(String contractDefinitionId) {
         webClientBuilder.build()
@@ -144,6 +198,13 @@ public class ProviderService {
                 .block();
     }
 
+    /**
+     * Get Policy Definition
+     *
+     * @param policyDefinitionId
+     * @return
+     */
+
     public PolicyDefinitionsRequestDTO getPolicyDefinition(String policyDefinitionId) {
         return  webClientBuilder.build()
                 .get()
@@ -155,6 +216,13 @@ public class ProviderService {
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
     }
+
+    /**
+     * Delete Policy Definitions
+     *
+     * @param policyDefinitionId
+     * @return
+     */
 
     public void deletePolicyDefinitions(String policyDefinitionId) {
         webClientBuilder.build()
@@ -168,6 +236,13 @@ public class ProviderService {
                 .block();
     }
 
+    /**
+     * Get Assets
+     *
+     * @param assetId
+     * @return
+     */
+
     public AssetResponseDTO getAsset(String assetId) {
         return  webClientBuilder.build()
                 .get()
@@ -179,6 +254,13 @@ public class ProviderService {
                 .delaySubscription(Duration.ofMillis(500))
                 .block();
     }
+
+    /**
+     * Delete Assets
+     *
+     * @param assetId
+     * @return
+     */
 
     public void deleteAsset(String assetId) {
         webClientBuilder.build()

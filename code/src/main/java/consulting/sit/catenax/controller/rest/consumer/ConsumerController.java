@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.Check;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -54,6 +55,12 @@ public class ConsumerController {
         this.consumerFacade = consumerFacade;
     }
 
+    /**
+     * Get contract offer catalog
+     * @param providerUrl
+     * @return
+     */
+
     @Operation(
             summary = "Get contract offer catalog."
             , description = "Get contract offer catalog."
@@ -71,6 +78,12 @@ public class ConsumerController {
        }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Request a Contract Negotiation
+     * @body OfferRequestDTO
+     * @return
+     */
 
     @Operation(
             summary = " Request a Contract Negotiation ID."
@@ -90,6 +103,12 @@ public class ConsumerController {
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Check State
+     * @param transferId
+     * @return
+     */
+
     @Operation(
             summary = "Check State of the Transfer Process."
             , description = "Check State of the Transfer Process."
@@ -107,6 +126,12 @@ public class ConsumerController {
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Get all transfer process
+     * @param
+     * @return
+     */
 
     @Operation(
             summary = "Get all transfer process."

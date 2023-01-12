@@ -38,6 +38,12 @@ public class ProviderController {
         this.providerFacade = providerFacade;
     }
 
+    /**
+     * Create an asset
+     * @param assetRequestDTO
+     * @return
+     */
+
     @Operation(
             summary = "Create an asset."
             , description = " Create an asset.")
@@ -52,6 +58,12 @@ public class ProviderController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         getProviderFacade().createAnAsset(assetRequestDTO);
     }
+
+    /**
+     * Create Policy Definitions
+     * @param policyDefinitionsRequestDTO
+     * @return
+     */
 
     @Operation(
             summary = "Create Policy Definitions."
@@ -68,6 +80,12 @@ public class ProviderController {
         getProviderFacade().createPolicyDefinitions(policyDefinitionsRequestDTO);
     }
 
+    /**
+     * Create Contract Definitions
+     * @param contractDefinitionDTO
+     * @return
+     */
+
     @Operation(
             summary = "Create Contract Definitions."
             , description = "Create Contract Definitions.")
@@ -83,6 +101,12 @@ public class ProviderController {
         getProviderFacade().createContractDefinitions(contractDefinitionDTO);
     }
 
+    /**
+     * Delete Contract Definitions
+     * @param contractDefinitionId
+     * @return
+     */
+
     @Operation(
             summary = "Delete Contract Definitions."
             , description = "Delete Contract Definitions.")
@@ -96,6 +120,12 @@ public class ProviderController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         getProviderFacade().deleteContractDefinitions(contractDefinitionId);
     }
+
+    /**
+     * Delete Policy Definitions
+     * @param policyDefinitionId
+     * @return
+     */
 
     @Operation(
             summary = "Delete Policy Definitions."
@@ -111,6 +141,12 @@ public class ProviderController {
         getProviderFacade().deletePolicyDefinitions(policyDefinitionId);
     }
 
+    /**
+     * Delete Asset
+     * @param assetId
+     * @return
+     */
+
     @Operation(
             summary = "Delete Asset."
             , description = "Delete Asset.")
@@ -124,6 +160,14 @@ public class ProviderController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         getProviderFacade().deleteAsset(assetId);
     }
+
+
+    /**
+     * Get all assets
+     * @param
+     * @return
+     */
+
     @Operation(
             summary = "Get all assets."
             , description = "Get all assets."
@@ -140,6 +184,12 @@ public class ProviderController {
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Get all policy definitions
+     * @param
+     * @return
+     */
+
     @Operation(
             summary = "Get all policy definitions."
             , description = "Get all policy definitions."
@@ -155,6 +205,12 @@ public class ProviderController {
         }
         return new ResponseEntity<>(headers, HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Get all contract definitions
+     * @param
+     * @return
+     */
 
     @Operation(
             summary = "Get all contract definitions."
